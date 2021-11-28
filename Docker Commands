@@ -1,0 +1,159 @@
+#docker verison
+
+docker  --version
+
+# list of running docker containers
+
+docker ps
+
+# list of running or exited docker containers i.e history 
+
+docker ps -a
+
+# pull any docker image locally from docker hub
+# by default latest version if version not specified
+
+docker pull image-name 
+or
+docker pull image-name:version
+
+# list all pulled images [image: is the docker compatible application]
+
+docker images  
+or 
+docker image ls
+
+# start image in a container [container: is a running environment of a image] [run: pull + run]
+# by default latest version if version not specified
+
+docker run image-name 
+or
+docker run image-id
+or
+docker run image-name:version
+
+# detach mode / run in the backgroud. returns container id hash
+
+docker -d run image-name 
+or
+docker -d run image-id
+
+
+# start a container
+
+docker start container-id 
+
+# stop a container
+
+docker start container-id 
+
+# kill or force stop a container
+
+docker kill container-id 
+
+# port binding between host-port->docker-application-port
+
+docker run -p[host-port]:[docker-application-port] image-name
+or
+docker run -p[host-port]:[docker-application-port] image-name:version
+
+#remove docker container
+
+docker rm container-id
+
+#remove docker image from local storage
+
+docker rmi Image image-name
+or
+docker rmi Image image-id
+
+# specific image history
+docker ps -a | grep image-name:version
+
+
+
+====================================================================================================================================
+
+Basic docker troubleshooting commands
+
+# logs of docker containers
+docker logs container-id
+or
+docker logs container-name
+
+# custom container name during container create
+docker run -d -p[host-port]:[docker-application-port] --name container-name image-name
+
+# rename container name
+docker rename current-container-name new-container-name
+
+# get terminal of running container
+docker exec -it container-id /bin/bash
+or
+docker exec -it container-name /bin/bash
+or
+docker exec -it container-name /bin/sh 
+
+
+====================================================================================================================================
+
+Docker newtork commands
+
+
+
+docker network
+
+Manage networks
+
+Commands:
+
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks
+
+Run 'docker network COMMAND --help' for more information on a command.
+
+
+# list networks
+docker network ls
+
+# create custom network
+docker network create network-name
+
+# run mongo 
+docker run -d -p 27017:27017 --name mongodb --network mongo-network -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=123456 mongo
+
+#run mongo-express
+docker run -d -p  8081:8081 -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=123456 --network mongo-network --name mongo-express -e  ME_CONFIG_MONGODB_SERVER=mongodb mongo-express
+
+# logs tail 
+ docker logs container-name | tail
+
+ # logs stream
+ docker logs container-name -f
+
+
+===================================================================================================================================
+
+Docker-compose commands
+
+# docker-compose up
+docker-compose -f compose-file-name.yaml up 
+
+# docker-compose up in detach mode
+docker-compose -f compose-file-name.yaml up -d
+
+# docker-compose down
+docker-compose -f compose-file-name.yaml down
+
+
+
+===================================================================================================================================
+Custom docker image creation
+
+# create docker image from Dockerfile
+docker build -t image-name:version .
